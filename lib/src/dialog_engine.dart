@@ -58,14 +58,11 @@ class DialogEngine implements VuiFlowDelegate {
       }
     };
     asrEngine.onError = (error) async {
-      print('asr onError $error');
       await ttsEngine.stopPlaying();
       await asrEngine.stopRecognition();
       _emit(DialogEngineIdling());
     };
     asrEngine.onStatusChange = (state) async {
-      print('asr onStatusChange $state');
-
       if (state == AsrEngineState.listening) {
         return;
       }
@@ -103,16 +100,6 @@ class DialogEngine implements VuiFlowDelegate {
     return DialogEngine(
       asrEngine: PlatformAsrEngine(),
       ttsEngine: PlatformTtsEngine(),
-      nluEngine: GeminiNluEngine(apiKey: geminiApiKey),
-      nlgEngine: GeminiNlgEngine(apiKey: geminiApiKey),
-    );
-  }
-
-  /// Creates an instance of a mock [DialogEngine].
-  factory DialogEngine.mock(String geminiApiKey) {
-    return DialogEngine(
-      asrEngine: MockAsrEngine(),
-      ttsEngine: MockTtsEngine(),
       nluEngine: GeminiNluEngine(apiKey: geminiApiKey),
       nlgEngine: GeminiNlgEngine(apiKey: geminiApiKey),
     );

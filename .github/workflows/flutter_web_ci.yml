@@ -1,0 +1,46 @@
+name: Flutter Web
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      API_KEY: ${{ secrets.API_KEY }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Place API Key
+        run: |
+          echo "$env:SUPER_SECRET" > ./dialog_app/lib/bloc/api_key.dart
+          ls ./dialog_app/lib/bloc/
+          cat ./dialog_app/lib/bloc/api_key.dart
+      # - uses: actions/setup-java@v1
+      #   with:
+      #     java-version: "12.x"
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "3.22.x"
+          channel: "stable"
+      - name: Upgrades Flutter
+        run: flutter upgrade
+        working-directory: ./dialog_app
+      - name: Enable Web
+        run: flutter config --enable-web
+        working-directory: ./dialog_app
+      - name: Install Dependencies
+        run: flutter packages get
+        working-directory: ./dialog_app
+      - name: Build Web
+        # run: flutter build web --wasm
+        run: flutter build web
+        working-directory: ./dialog_app
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dialog_app/build/web

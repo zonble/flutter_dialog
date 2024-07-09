@@ -9,7 +9,13 @@ import 'vui_flows/leave_application.dart';
 import 'teams_helper.dart';
 
 class DialogCubit extends Cubit<DialogEngineState> {
-  final DialogEngine dialogEngine = DialogEngine.standard(geminiApiKey);
+  final _dialogEngine = DialogEngine(
+    asrEngine: PlatformAsrEngine(),
+    ttsEngine: PlatformTtsEngine(),
+    nluEngine: GeminiNluEngine(apiKey: geminiApiKey),
+    nlgEngine: GeminiNlgEngine(apiKey: geminiApiKey),
+  );
+
   final availableDepartments = [
     '內科',
     '外科',
@@ -29,12 +35,12 @@ class DialogCubit extends Cubit<DialogEngineState> {
   DialogCubit({
     required this.oMakingAppointment,
   }) : super(DialogEngineIdling()) {
-    dialogEngine.ttsEngine.setLanguage('zh-TW');
-    dialogEngine.asrEngine.setLanguage('zh-TW');
-    dialogEngine.stateStream.listen((state) {
+    _dialogEngine.ttsEngine.setLanguage('zh-TW');
+    _dialogEngine.asrEngine.setLanguage('zh-TW');
+    _dialogEngine.stateStream.listen((state) {
       emit(state);
     });
-    dialogEngine.registerFlows([
+    _dialogEngine.registerFlows([
       HospitalAppointmentVuiFlow(
           onCheckingIfCanMakeAppointment: (department, date, time) async {
         // print('department $department');
@@ -87,9 +93,9 @@ class DialogCubit extends Cubit<DialogEngineState> {
     ]);
   }
 
-  Future<void> init() async => await dialogEngine.init();
+  Future<void> init() async => await _dialogEngine.init();
 
-  Future<void> start() async => await dialogEngine.start();
+  Future<void> start() async => await _dialogEngine.start();
 
-  Future<void> stop() async => await dialogEngine.stop();
+  Future<void> stop() async => await _dialogEngine.stop();
 }

@@ -3,16 +3,13 @@ import 'dart:async';
 import 'package:dialog_app/bloc/vui_flows/leave_application.dart';
 import 'package:flutter_dialog/flutter_dialog.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'dialog_engine_extension.dart';
 
 const key = 'YOUR_API_KEY';
 
-extension DialogEngineMock on DialogEngine {
-
-}
-
 void main() {
   test('Test Engine 1', () async {
-    final engine = DialogEngine.mock(key);
+    final engine = DialogEngineMock.mock(key);
     final completer = Completer();
 
     engine.stateStream.listen((newState) {
@@ -35,7 +32,7 @@ void main() {
   });
 
   test('Test Engine 1 - 1', () async {
-    final engine = DialogEngine.mock(key);
+    final engine = DialogEngineMock.mock(key);
     final completer = Completer();
 
     engine.stateStream.listen((newState) {
@@ -58,7 +55,7 @@ void main() {
   });
 
   test('Test Engine 1 - 2', () async {
-    final engine = DialogEngine.mock(key);
+    final engine = DialogEngineMock.mock(key);
     final completer = Completer();
 
     engine.stateStream.listen((newState) {
@@ -81,7 +78,7 @@ void main() {
   });
 
   test('Test Engine 2', () async {
-    final engine = DialogEngine.mock(key);
+    final engine = DialogEngineMock.mock(key);
     final completer = Completer();
 
     engine.registerFlows([
@@ -109,10 +106,11 @@ void main() {
     );
 
     final completer = Completer();
-    var systemCallCalled = true;
+    var systemCallCalled = false;
     engine.registerFlows([
       LeaveApplicationVuiFlow(
           onMakingLeaveApplication: (reason, date, text) async {
+        systemCallCalled = true;
         print('onMakingLeaveApplication called');
         expect(date, '明天下午');
         expect(reason, '出去玩');
@@ -128,7 +126,7 @@ void main() {
   });
 
   test('Test Engine 4', () async {
-    final engine = DialogEngine.mock(key);
+    final engine = DialogEngineMock.mock(key);
     final completer = Completer();
 
     engine.stateStream.listen((newState) {
@@ -138,10 +136,8 @@ void main() {
     engine.registerFlows([
       LeaveApplicationVuiFlow(
           onMakingLeaveApplication: (reason, date, text) async {
-        print('onMakingLeaveApplication called');
-        print(reason);
-        print(date);
-        print(text);
+        expect(date, '下個星期一');
+        expect(reason, '生病');
         completer.complete();
         return true;
       })
