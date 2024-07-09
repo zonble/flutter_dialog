@@ -7,19 +7,21 @@ class BookingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var blankWidget = const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text('按下下方的麥克風按鈕，開始語音對話'),
+          Text('可以試試看「我想掛號」、「我想請假」'),
+          Text('Edge 瀏覽器可能無法支援中文語音辨識'),
+        ],
+      ),
+    );
     return BlocBuilder<BookingCubit, BookingState>(builder: (context, state) {
       if (state is BookingWithData) {
         if (state.records.isEmpty) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('按下下方的麥克風按鈕，開始語音對話'),
-                Text('可以試試看「我想掛號」、「我想請假」'),
-              ],
-            ),
-          );
+          return blankWidget;
         }
         return ListView.builder(
           itemCount: state.records.length,
@@ -33,16 +35,7 @@ class BookingsPage extends StatelessWidget {
           },
         );
       } else {
-        return const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text('按下下方的麥克風按鈕，開始語音對話'),
-              Text('可以試試看「我想掛號」、「我想請假」'),
-            ],
-          ),
-        );
+        return blankWidget;
       }
     });
   }
