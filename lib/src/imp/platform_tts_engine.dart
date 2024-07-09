@@ -16,24 +16,24 @@ class PlatformTtsEngine extends TtsEngine {
     });
     flutterTTs.setCompletionHandler(() {
       print('tts onComplete $_ttsCompleter');
+      onComplete?.call();
       _ttsCompleter?.complete();
       _ttsCompleter = null;
-      onComplete?.call();
     });
     flutterTTs.setProgressHandler((text, startOffset, endOffset, word) {
       onProgress?.call(text, startOffset, endOffset, word);
     });
     flutterTTs.setErrorHandler((msg) {
       print('tts onError $_ttsCompleter');
+      onError?.call(msg);
       _ttsCompleter?.complete();
       _ttsCompleter = null;
-      onError?.call(msg);
     });
     flutterTTs.setCancelHandler(() {
       print('tts onCancel $_ttsCompleter');
+      onCancel?.call();
       _ttsCompleter?.complete();
       _ttsCompleter = null;
-      onCancel?.call();
     });
     flutterTTs.setPauseHandler(() {
       print('TTS setPauseHandler');
@@ -47,8 +47,8 @@ class PlatformTtsEngine extends TtsEngine {
 
   @override
   Future<void> playPrompt(String prompt) async {
-    var ttsCompleter = Completer();
     await flutterTTs.speak(prompt);
+    var ttsCompleter = Completer();
     _ttsCompleter = ttsCompleter;
     await ttsCompleter.future;
   }

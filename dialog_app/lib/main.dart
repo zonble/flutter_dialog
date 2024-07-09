@@ -68,8 +68,15 @@ class _MyHomePageState extends State<MyHomePage> {
       body: BlocBuilder<DialogCubit, DialogEngineState>(
         builder: (context, state) {
           if (state is DialogEngineIdling) {
-            return BookingsPage();
+            return const BookingsPage();
           }
+          if (state is DialogEngineError) {
+            final message = state.errorMessage;
+            return Center(
+              child: Text('Error occurred: $message'),
+            );
+          }
+
           if (state is DialogEngineListening) {
             return Center(
                 child: Column(

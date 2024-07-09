@@ -107,8 +107,8 @@ class HospitalAppointmentVuiFlow extends VuiFlow {
     var date = intent.slots['Date'] ?? this.date;
     var time = intent.slots['Time'] ?? this.time;
 
-    if (date == null || time == null || department == null) {
-      final prompt = () {
+    String? errorPrompt = () {
+      if (date == null || time == null || department == null) {
         if ((date == null || time == null) && department == null) {
           return '請問您要看哪一科？然後預約哪一天的什麼時間？';
         }
@@ -122,14 +122,24 @@ class HospitalAppointmentVuiFlow extends VuiFlow {
           return '請問您要看哪一科？';
         }
         return '請問您要看哪一科？然後預約哪一天的什麼時間';
-      }();
+      }
+      if (time != null) {
+        try {
+          int.parse(time.split(':')[0]);
+        } catch (e) {
+          return '很抱歉，請具體說明你要預約的是幾點';
+        }
+      }
+      return null;
+    }();
 
+    if (errorPrompt != null) {
       errorCount += 1;
       if (errorCount >= _maxErrorCount) {
         await handleMaxError();
         return;
       }
-      await delegate?.onPlayingPrompt(prompt);
+      await delegate?.onPlayingPrompt(errorPrompt);
       await Future.delayed(const Duration(microseconds: 500));
       final vuiFlow = HospitalAppointmentVuiFlow(
         onMakingAppointment: onMakingAppointment,

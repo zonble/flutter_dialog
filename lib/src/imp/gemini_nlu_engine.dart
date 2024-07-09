@@ -75,6 +75,7 @@ class GeminiNluEngine extends NluEngine {
       throw GeminiNluEngineError(
           'Failed to extract response from jsonString $jsonString.');
     }
+    print('jsonString $jsonString');
     final map = json.decode(jsonString);
     final intent = NluIntent.fromMap(map);
     return intent;

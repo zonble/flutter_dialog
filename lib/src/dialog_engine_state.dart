@@ -7,6 +7,14 @@ abstract class DialogEngineState {}
 /// Represents that [DialogEngine] is idling.
 class DialogEngineIdling extends DialogEngineState {}
 
+class DialogEngineError extends DialogEngineState {
+  /// The error message.
+  final String errorMessage;
+
+  /// Creates a new instance.
+  DialogEngineError({required this.errorMessage});
+}
+
 /// Represents that [DialogEngine] is listening.
 class DialogEngineListening extends DialogEngineState {
   /// The ASR (Automatic Speech Recognition) result.

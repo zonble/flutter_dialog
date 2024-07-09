@@ -58,9 +58,10 @@ class DialogEngine implements VuiFlowDelegate {
       }
     };
     asrEngine.onError = (error) async {
+      // print(error);
       await ttsEngine.stopPlaying();
       await asrEngine.stopRecognition();
-      _emit(DialogEngineIdling());
+      _emit(DialogEngineError(errorMessage: error));
     };
     asrEngine.onStatusChange = (state) async {
       if (state == AsrEngineState.listening) {
@@ -112,7 +113,7 @@ class DialogEngine implements VuiFlowDelegate {
 
     try {
       print('extractIntent ...');
-      // _updateIntents();
+      _updateIntents();
       final additionalPrompt = _collectionAdditionalNluPrompt();
       final intent = await nluEngine.extractIntent(
         input,
@@ -138,6 +139,7 @@ class DialogEngine implements VuiFlowDelegate {
       await onPlayingPrompt(prompt);
       await stop();
     } catch (e) {
+      print('NLU error: $e');
       _currentVuiFlow = null;
       await onPlayingPrompt(fallbackErrorMessage);
       await stop();
@@ -248,8 +250,11 @@ class DialogEngine implements VuiFlowDelegate {
 
   @override
   Future<void> onPlayingPrompt(String prompt) async {
+    print('stop TTS');
     await ttsEngine.stopPlaying();
+    print('emit TTS state');
     _emit(DialogEnginePlayingTts(prompt: prompt));
+    print('play TTS prompt');
     await ttsEngine.playPrompt(prompt);
   }
 

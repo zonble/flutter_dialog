@@ -4,9 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_dialog/flutter_dialog.dart';
 
 import 'api_key.dart';
+import 'teams_helper.dart';
 import 'vui_flows/hospital_appointment.dart';
 import 'vui_flows/leave_application.dart';
-import 'teams_helper.dart';
 
 class DialogCubit extends Cubit<DialogEngineState> {
   final _dialogEngine = DialogEngine(
@@ -23,6 +23,9 @@ class DialogCubit extends Cubit<DialogEngineState> {
     '神經內科',
     '婦產科',
     '小兒科',
+    '眼科',
+    '牙科',
+    '耳鼻喉科'
   ];
 
   final Future<void> Function(

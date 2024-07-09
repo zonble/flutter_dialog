@@ -11,7 +11,14 @@ class BookingsPage extends StatelessWidget {
       if (state is BookingWithData) {
         if (state.records.isEmpty) {
           return const Center(
-            child: Text('No bookings yet'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('按下下方的麥克風按鈕，開始語音對話'),
+                Text('可以試試看「我想掛號」、「我想請假」'),
+              ],
+            ),
           );
         }
         return ListView.builder(
@@ -27,7 +34,14 @@ class BookingsPage extends StatelessWidget {
         );
       } else {
         return const Center(
-          child: Text('No bookings yet'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('按下下方的麥克風按鈕，開始語音對話'),
+              Text('可以試試看「我想掛號」、「我想請假」'),
+            ],
+          ),
         );
       }
     });
