@@ -17,7 +17,8 @@ jobs:
       - uses: actions/checkout@v1
       - name: Place API Key
         run: |
-          echo "$env:SUPER_SECRET" > ./dialog_app/lib/bloc/api_key.dart
+          # echo "$env:SUPER_SECRET" > ./dialog_app/lib/bloc/api_key.dart
+          echo "${{ secrets.API_KEY }}" > ./dialog_app/lib/bloc/api_key.dart
           ls ./dialog_app/lib/bloc/
           cat ./dialog_app/lib/bloc/api_key.dart
       # - uses: actions/setup-java@v1
