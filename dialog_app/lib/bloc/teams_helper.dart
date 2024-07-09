@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TeamsHelper {
@@ -15,8 +16,14 @@ class TeamsHelper {
         "users=$encodedUser&"
         "topicName=$encodedTopicName&"
         "message=$encodedMessage");
-    launchUrl(url,
+
+    if (kIsWeb) {
+      launchUrl(url, webOnlyWindowName: '_blank');
+    } else {
+      launchUrl(
+        url,
         // mode: LaunchMode.externalApplication
-    );
+      );
+    }
   }
 }

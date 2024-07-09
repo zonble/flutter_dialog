@@ -29,3 +29,5 @@ migrate_working_dir/
 build/
 
 api_key.dart
+
+.fvm/flutter_sdk
