@@ -39,7 +39,7 @@ jobs:
         working-directory: ./dialog_app
       - name: Build Web
         # run: flutter build web --wasm
-        run: flutter build web
+        run: flutter build web --base-href https://zonble.github.io/flutter_dialog/
         working-directory: ./dialog_app
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
