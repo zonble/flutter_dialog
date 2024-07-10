@@ -5,11 +5,13 @@ import '../vui_flow.dart';
 /// A common VUI flow for handling greeting.
 class GreetingVuiFlow extends VuiFlow {
   /// The greeting message.
-  var message = 'Hello. How can I help you?';
+  var greetingMessage = 'Hello. How can I help you?';
+
+  /// If true, let the NLG engine generate the message to the users.
   var useNlgPrompt = false;
 
   GreetingVuiFlow({
-    this.message = 'Hello. How can I help you?',
+    this.greetingMessage = 'Hello. How can I help you?',
     this.useNlgPrompt = false,
   });
 
@@ -20,15 +22,16 @@ class GreetingVuiFlow extends VuiFlow {
   }) async {
     final String prompt = await () async {
       if (!useNlgPrompt) {
-        return message;
+        return greetingMessage;
       }
-      var utterance = 'Generate a greeting message'
-          ' which shows the willing to help the user.\n';
-      utterance +=
-          "The greeting message is responding to the user's sentence \"$utterance\".";
-      final prompt = await delegate?.onGeneratingResponse(utterance,
-          useDefaultPrompt: false);
-      return prompt ?? message;
+      var prompt = 'Create a response for the sentence:\n\n$utterance\n\n';
+      prompt += 'The response shows the willing to help.\n';
+      prompt += 'The response should be less than 30 words.\n';
+      prompt += 'The response should not be another question.\n';
+      prompt += 'The response should not contain emoji.\n';
+      return await delegate?.onGeneratingResponse(prompt,
+              useDefaultPrompt: false) ??
+          greetingMessage;
     }();
 
     await delegate?.onPlayingPrompt(prompt);

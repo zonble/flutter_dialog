@@ -28,7 +28,8 @@ class DialogEngine implements VuiFlowDelegate {
   /// The NLG (Natural Language Generating) engine.
   final NlgEngine nlgEngine;
 
-  String fallbackErrorMessage = 'Sorry, I do not understand for now.';
+  String fallbackUnknownIntentMessage = 'Sorry, I do not understand for now.';
+  String fallbackErrorMessage = 'Sorry, something went wrong.';
 
   final StreamController<DialogEngineState> _stateStream = StreamController();
 
@@ -104,6 +105,7 @@ class DialogEngine implements VuiFlowDelegate {
     );
   }
 
+  /// Handles the input from the ASR engine.
   Future handleInput(String input) async {
     _emit(DialogEngineCompleteListening(asrResult: input));
     await ttsEngine.stopPlaying();
@@ -122,18 +124,19 @@ class DialogEngine implements VuiFlowDelegate {
       if (_currentVuiFlow != null) {
         // print('_currentVuiFlow $_currentVuiFlow is handling intent');
         await _currentVuiFlow
-            ?.handle(intent)
+            ?.handle(intent, utterance: input)
             .timeout(const Duration(seconds: 60));
         return;
       }
       final flow = _vuiFlowMap[intent.intent];
       if (flow != null) {
-        // print('flow $flow is handling intent');
-        await flow.handle(intent).timeout(const Duration(seconds: 60));
+        await flow
+            .handle(intent, utterance: input)
+            .timeout(const Duration(seconds: 60));
         return;
       }
-      final prompt =
-          await nlgEngine.generateResponse(input) ?? fallbackErrorMessage;
+      final prompt = await nlgEngine.generateResponse(input) ??
+          fallbackUnknownIntentMessage;
       await onPlayingPrompt(prompt);
       await stop();
     } catch (e) {

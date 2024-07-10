@@ -6,7 +6,6 @@ abstract class NlgEngine {
   Future<String?> generateResponse(
     String utterance, {
     bool useDefaultPrompt = true,
-    bool? preventMeaningLessMessage,
   });
 
   /// Sets the language.

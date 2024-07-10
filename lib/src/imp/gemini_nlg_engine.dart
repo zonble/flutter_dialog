@@ -20,7 +20,6 @@ class GeminiNlgEngine extends NlgEngine {
   Future<String?> generateResponse(
     String utterance, {
     bool useDefaultPrompt = true,
-    bool? preventMeaningLessMessage,
   }) async {
     final model = GenerativeModel(
       model: geminiModel,
@@ -34,14 +33,11 @@ class GeminiNlgEngine extends NlgEngine {
       prompt += 'The response should be less than 30 words.\n';
       prompt += 'The response should not be another question.\n';
       prompt += 'The response should not contain emoji.\n';
-      if (preventMeaningLessMessage == true) {
-        prompt += 'If the sentence is lacking of context.'
-            ' Just say you do not understand'
-            ' using the same language as the incoming sentence.';
-      }
-      if (_language != null) {
-        prompt += 'Current language is: $_language\n';
-      }
+      prompt += 'If the sentence is lacking of context.'
+          ' Just say you do not understand.';
+    }
+    if (_language != null) {
+      prompt += 'Current language is: $_language\n';
     }
 
     final content = [Content.text(prompt)];
