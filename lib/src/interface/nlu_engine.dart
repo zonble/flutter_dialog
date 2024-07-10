@@ -30,6 +30,8 @@ class NluIntent {
 ///
 /// NLU stands for Natural Language Understanding. An NLU engine is responsible
 /// for extracting the intent and slots from the user's utterance.
+///
+/// Any subclass of [NluEngine] must implement the [extractIntent] method.
 abstract class NluEngine {
   Set<String> availableIntents = <String>{};
   Set<String> availableSlots = <String>{};

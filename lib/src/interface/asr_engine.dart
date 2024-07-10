@@ -6,6 +6,13 @@ enum AsrEngineState {
 }
 
 /// Represents an ASR Engine.
+///
+/// ASR stands for Automatic Speech Recognition, and it is also known as STT,
+/// Speech to Text. An ASR engine is responsible to record user's speech and
+/// convert it into text.
+///
+/// Any subclass must implement the [init], [startRecognition],
+/// [stopRecognition] and [setLanguage] methods.,
 abstract class AsrEngine {
   /// Initialized the ASR engine.
   Future<bool> init();

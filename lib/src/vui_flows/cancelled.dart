@@ -10,7 +10,10 @@ class CancelledVuiFlow extends VuiFlow {
   CancelledVuiFlow({this.message = 'OK. Cancelled.'});
 
   @override
-  Future<void> handle(NluIntent intent) async {
+  Future<void> handle(
+    NluIntent intent, {
+    String? utterance,
+  }) async {
     await delegate?.onPlayingPrompt(message);
     await delegate?.onEndingConversation();
   }

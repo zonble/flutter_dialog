@@ -41,7 +41,10 @@ class HospitalAppointmentSubVuiFlow extends VuiFlow {
   });
 
   @override
-  Future<void> handle(NluIntent intent) async {
+  Future<void> handle(
+    NluIntent intent, {
+    String? utterance,
+  }) async {
     final promptForReply =
         "如果一個人發生了需要掛號 $department 的狀況，你會怎麼祝他順利呢？只要一句話就好了。不要 emoji。";
     final greet = await delegate?.onGeneratingResponse(
@@ -96,7 +99,10 @@ class HospitalAppointmentVuiFlow extends VuiFlow {
   var errorCount = 0;
 
   @override
-  Future<void> handle(NluIntent intent) async {
+  Future<void> handle(
+    NluIntent intent, {
+    String? utterance,
+  }) async {
     Future<void> handleMaxError() async {
       await delegate?.onSettingCurrentVuiFlow(null);
       await delegate?.onPlayingPrompt('很抱歉，錯誤次數太多');

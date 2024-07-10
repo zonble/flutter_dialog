@@ -24,7 +24,10 @@ abstract class VuiFlowDelegate {
 /// The interface for VUI flow.
 abstract class VuiFlow {
   /// Handles the given [intent]. The intent is from an NLU engine.
-  Future<void> handle(NluIntent intent);
+  Future<void> handle(
+    NluIntent intent, {
+    String? utterance,
+  });
 
   /// Called when the dialog engine asks to cancel the current VUI flow.
   Future<void> cancel() async {

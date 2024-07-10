@@ -30,7 +30,10 @@ class ConfirmVuiFlow extends VuiFlow {
   });
 
   @override
-  Future<void> handle(NluIntent intent) async {
+  Future<void> handle(
+    NluIntent intent, {
+    String? utterance,
+  }) async {
     if (commonAffirmationIntents.contains(intent.intent)) {
       positiveFlow.delegate = delegate;
       positiveFlow.handle(NluIntent(intent: '', slots: {}));

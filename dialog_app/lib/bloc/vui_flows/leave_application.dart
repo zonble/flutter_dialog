@@ -16,7 +16,10 @@ class LeaveApplicationVuiFlow extends VuiFlow {
   var errorCount = 0;
 
   @override
-  Future<void> handle(NluIntent intent) async {
+  Future<void> handle(
+    NluIntent intent, {
+    String? utterance,
+  }) async {
     Future<void> handleMaxError() async {
       await delegate?.onSettingCurrentVuiFlow(null);
       await delegate?.onPlayingPrompt('很抱歉，錯誤次數太多');
