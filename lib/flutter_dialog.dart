@@ -16,3 +16,5 @@ export 'src/vui_flow.dart';
 export 'src/vui_flows/cancelled.dart';
 export 'src/vui_flows/confirm.dart';
 export 'src/vui_flows/greeting.dart';
+export 'src/vui_flows/query_date.dart';
+export 'src/vui_flows/query_time.dart';

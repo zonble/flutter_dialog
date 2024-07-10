@@ -198,9 +198,7 @@ class HospitalAppointmentVuiFlow extends VuiFlow {
     var message = 'Convert date and time to Gregorian calendar.';
     final now = DateTime.now();
     final today = DateFormat.yMd().format(now);
-    if (date == null) {
-      message += ' today is $today (Y-M-D)';
-    }
+    message += ' today is $today (Y-M-D)';
     return message;
   }
 }
