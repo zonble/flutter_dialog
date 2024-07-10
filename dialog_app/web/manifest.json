@@ -1,11 +1,11 @@
 {
-    "name": "dialog_app",
-    "short_name": "dialog_app",
+    "name": "Flutter Dialog Example",
+    "short_name": "Flutter Dialog Example",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "使用 Flutter 與 Gemini 做出來的網頁版本語音助理示範",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

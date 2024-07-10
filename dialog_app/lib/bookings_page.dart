@@ -14,7 +14,10 @@ class BookingsPage extends StatelessWidget {
         children: [
           Text('按下下方的麥克風按鈕，開始語音對話'),
           Text('可以試試看「我想掛號」、「我想請假」'),
-          Text('Edge 瀏覽器可能無法支援中文語音辨識'),
+          SizedBox(height: 30),
+          Text('以下瀏覽器可能無法正常運作'),
+          Text('- macOS 上的 Edge 瀏覽器可能無法支援中文語音辨識'),
+          Text('- iOS 上的 Safari 無法支援 TTS 播放'),
         ],
       ),
     );
