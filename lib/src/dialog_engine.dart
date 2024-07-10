@@ -5,8 +5,6 @@ import 'package:meta/meta.dart';
 import 'common_intents.dart';
 import 'imp/gemini_nlg_engine.dart';
 import 'imp/gemini_nlu_engine.dart';
-import 'imp/mock_asr_engine.dart';
-import 'imp/mock_tts_engine.dart';
 import 'imp/platform_asr_engine.dart';
 import 'imp/platform_tts_engine.dart';
 import 'interface/asr_engine.dart';
@@ -112,7 +110,7 @@ class DialogEngine implements VuiFlowDelegate {
     await asrEngine.stopRecognition();
 
     try {
-      print('extractIntent ...');
+      // print('extractIntent ...');
       _updateIntents();
       final additionalPrompt = _collectionAdditionalNluPrompt();
       final intent = await nluEngine.extractIntent(
@@ -120,9 +118,9 @@ class DialogEngine implements VuiFlowDelegate {
         currentIntent: _currentVuiFlow?.intent,
         additionalRequirement: additionalPrompt,
       );
-      print('extractIntent done');
+      // print('extractIntent done');
       if (_currentVuiFlow != null) {
-        print('_currentVuiFlow $_currentVuiFlow is handling intent');
+        // print('_currentVuiFlow $_currentVuiFlow is handling intent');
         await _currentVuiFlow
             ?.handle(intent)
             .timeout(const Duration(seconds: 60));
@@ -130,7 +128,7 @@ class DialogEngine implements VuiFlowDelegate {
       }
       final flow = _vuiFlowMap[intent.intent];
       if (flow != null) {
-        print('flow $flow is handling intent');
+        // print('flow $flow is handling intent');
         await flow.handle(intent).timeout(const Duration(seconds: 60));
         return;
       }
@@ -139,7 +137,7 @@ class DialogEngine implements VuiFlowDelegate {
       await onPlayingPrompt(prompt);
       await stop();
     } catch (e) {
-      print('NLU error: $e');
+      // print('NLU error: $e');
       _currentVuiFlow = null;
       await onPlayingPrompt(fallbackErrorMessage);
       await stop();
@@ -250,11 +248,11 @@ class DialogEngine implements VuiFlowDelegate {
 
   @override
   Future<void> onPlayingPrompt(String prompt) async {
-    print('stop TTS');
+    // print('stop TTS');
     await ttsEngine.stopPlaying();
-    print('emit TTS state');
+    // print('emit TTS state');
     _emit(DialogEnginePlayingTts(prompt: prompt));
-    print('play TTS prompt');
+    // print('play TTS prompt');
     await ttsEngine.playPrompt(prompt);
   }
 
@@ -266,7 +264,7 @@ class DialogEngine implements VuiFlowDelegate {
 
   @override
   Future<void> onStartingAsr() async {
-    print('onStartingAsr called');
+    // print('onStartingAsr called');
 
     await start(clearCurrentVuiFlow: false);
   }

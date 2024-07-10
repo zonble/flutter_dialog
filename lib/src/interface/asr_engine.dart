@@ -1,3 +1,4 @@
+/// The state of an [AsrEngine].
 enum AsrEngineState {
   listening,
   notListening,

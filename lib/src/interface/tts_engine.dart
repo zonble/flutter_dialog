@@ -1,6 +1,9 @@
 import 'dart:async';
 
 /// Represents a TTS engine.
+///
+/// TTS stands for Text-to-Speech. The TTS engine is responsible for playing a
+/// prompt, stopping playing and so on.
 abstract class TtsEngine {
   /// Asks the TTS engine to play a prompt.
   Future<void> playPrompt(String prompt);

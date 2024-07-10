@@ -3,8 +3,10 @@ import '../vui_flow.dart';
 
 /// A common VUI flow for handling cancelled intent.
 class CancelledVuiFlow extends VuiFlow {
+  /// The message to be played when the user cancels.
   String message = 'OK. Cancelled.';
 
+  /// Creates a new instance of [CancelledVuiFlow].
   CancelledVuiFlow({this.message = 'OK. Cancelled.'});
 
   @override

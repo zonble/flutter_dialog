@@ -6,12 +6,22 @@ const _maxErrorCount = 5;
 
 /// A common VUI flow for handling confirmation.
 class ConfirmVuiFlow extends VuiFlow {
+  /// The VUI flow to be executed when the user confirms.
   final VuiFlow positiveFlow;
+
+  /// The VUI flow to be executed when the user denies.
   final VuiFlow negativeFlow;
+
+  /// The message to be played when the user makes too many errors.
   var maxErrorMessage = 'Sorry, too many errors.';
+
+  /// The message to be played when the user makes an error.
   var errorMessage = 'Sorry, I do not understand. Please say ?';
+
+  /// The error count.
   var errorCount = 0;
 
+  /// Creates a new instance of [ConfirmVuiFlow].
   ConfirmVuiFlow({
     required this.positiveFlow,
     required this.negativeFlow,
@@ -35,9 +45,12 @@ class ConfirmVuiFlow extends VuiFlow {
         return;
       }
       await delegate?.onPlayingPrompt(errorMessage);
-      final newFlow =
-          ConfirmVuiFlow(positiveFlow: positiveFlow, negativeFlow: negativeFlow)
-            ..errorCount = errorCount;
+      final newFlow = ConfirmVuiFlow(
+        positiveFlow: positiveFlow,
+        negativeFlow: negativeFlow,
+        maxErrorMessage: maxErrorMessage,
+        errorMessage: errorMessage,
+      )..errorCount = errorCount;
       await delegate?.onSettingCurrentVuiFlow(newFlow);
       await delegate?.onStartingAsr();
     }

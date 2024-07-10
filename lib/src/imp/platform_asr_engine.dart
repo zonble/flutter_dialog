@@ -11,7 +11,7 @@ class PlatformAsrEngine extends AsrEngine {
 
   @override
   Future<bool> init() async {
-    print('init called');
+    // print('init called');
     if (_isInitialized) {
       return _isInitialized;
     }
@@ -37,7 +37,7 @@ class PlatformAsrEngine extends AsrEngine {
 
   @override
   Future<bool> startRecognition() async {
-    print('startRecognition called');
+    // print('startRecognition called');
     if (!_isInitialized) {
       return false;
     }
@@ -61,7 +61,7 @@ class PlatformAsrEngine extends AsrEngine {
 
   @override
   Future<bool> stopRecognition() async {
-    print('stopRecognition called');
+    // print('stopRecognition called');
     if (!_isInitialized) {
       return false;
     }

@@ -1,3 +1,4 @@
+/// A set of common affirmation intents.
 const commonAffirmationIntents = {
   'Affirmation',
   'Confirm',
@@ -5,6 +6,7 @@ const commonAffirmationIntents = {
   'Agree',
 };
 
+/// A set of common negation intents.
 const commonNegationIntents = {
   "Negation",
   'Cancel',
