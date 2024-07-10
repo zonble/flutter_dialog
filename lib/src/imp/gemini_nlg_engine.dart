@@ -39,10 +39,20 @@ class GeminiNlgEngine extends NlgEngine {
             ' Just say you do not understand'
             ' using the same language as the incoming sentence.';
       }
+      if (_language != null) {
+        prompt += 'Current language is: $_language\n';
+      }
     }
 
     final content = [Content.text(prompt)];
     final response = await model.generateContent(content);
     return response.text;
+  }
+
+  String? _language;
+
+  @override
+  Future<void> setLanguage(String language) async {
+    _language = language;
   }
 }

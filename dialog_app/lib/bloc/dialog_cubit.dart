@@ -40,10 +40,12 @@ class DialogCubit extends Cubit<DialogEngineState> {
   }) : super(DialogEngineIdling()) {
     _dialogEngine.ttsEngine.setLanguage('zh-TW');
     _dialogEngine.asrEngine.setLanguage('zh-TW');
+    _dialogEngine.nlgEngine.setLanguage('zh-TW');
     _dialogEngine.stateStream.listen((state) {
       emit(state);
     });
     _dialogEngine.registerFlows([
+      GreetingVuiFlow(useNlgPrompt: true),
       HospitalAppointmentVuiFlow(
           onCheckingIfCanMakeAppointment: (department, date, time) async {
         // print('department $department');

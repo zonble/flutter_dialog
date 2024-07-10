@@ -8,4 +8,7 @@ abstract class NlgEngine {
     bool useDefaultPrompt = true,
     bool? preventMeaningLessMessage,
   });
+
+  /// Sets the language.
+  Future<void> setLanguage(String language);
 }

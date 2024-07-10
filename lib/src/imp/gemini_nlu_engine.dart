@@ -53,6 +53,7 @@ class GeminiNluEngine extends NluEngine {
       prompt += "The current indent is $currentIntent.";
     }
     prompt += "Valid slots are including: ${availableSlots.join(',')}.";
+    prompt += "Intents are in camel case.";
     prompt += "If the intent is not in the valid intents, return null.";
     if (additionalRequirement != null) {
       prompt += additionalRequirement;

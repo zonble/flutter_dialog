@@ -19,6 +19,37 @@ with your own implementations.
 
 ## Usage
 
+The following example demonstrates how to create a dialog engine with a minimal
+configuration:
+
 ```dart
+// Create a DialogEngine instance with the default engines
+final _dialogEngine = DialogEngine(
+    asrEngine: PlatformAsrEngine(),
+    ttsEngine: PlatformTtsEngine(),
+    nluEngine: GeminiNluEngine(apiKey: geminiApiKey),
+    nlgEngine: GeminiNlgEngine(apiKey: geminiApiKey),
+);
+
+// Set the language for the engines
+await _dialogEngine.ttsEngine.setLanguage('en-US');
+await _dialogEngine.asrEngine.setLanguage('en-US');
+await _dialogEngine.nlgEngine.setLanguage('en-US');
+
+// Listen to the dialog engine state
+_dialogEngine.stateStream.listen((state) {
+    print(state);
+});
+
+// Register the dialog flows
+_dialogEngine.registerFlows([
+    GreetingVuiFlow(useNlgPrompt: true),
+]);
+
+// Initialize the dialog engine
+await _dialogEngine.init();
+
+// Start the dialog engine to listen to user input
+await _dialogEngine.start();
 
 ```

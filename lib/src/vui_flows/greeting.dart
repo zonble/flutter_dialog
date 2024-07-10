@@ -22,8 +22,10 @@ class GreetingVuiFlow extends VuiFlow {
       if (!useNlgPrompt) {
         return message;
       }
-      const utterance =
-          'Generate a greeting message which shows the willing to help the user';
+      var utterance = 'Generate a greeting message'
+          ' which shows the willing to help the user.\n';
+      utterance +=
+          "The greeting message is responding to the user's sentence \"$utterance\".";
       final prompt = await delegate?.onGeneratingResponse(utterance,
           useDefaultPrompt: false);
       return prompt ?? message;
