@@ -51,5 +51,26 @@ await _dialogEngine.init();
 
 // Start the dialog engine to listen to user input
 await _dialogEngine.start();
-
 ```
+
+The dialog engine is composed by four engines: ASR, NLU, NLG, and TTS, and run
+the VUI flows among these engines. ASR engine converts users' speech to text,
+then it pass the converted text to NLU engine to understand the user's intent.
+After that, a VUI flow handles a known intent and decides how to respond to the
+users, it may use NLG engine to generate text and then use NLG engine to play
+prompts.
+
+All of these components are customizable. So, when creating a dialog engine, you
+should specify the engines you want to use. For example, you can also use a
+different ASR engine which implementing the `AsrEngine` interface.
+
+Then, register desired VUI flows to the engine, so, when the engine detect an
+intent that your VUI flows can handle, it will call the VUI flow to handle the
+intent. You can easily create a VUI flow using the package.
+
+Finally, you can start the dialog engine to listen to user input.
+
+## License
+
+The package is released under the MIT license. See [LICENSE](LICENSE).
+
