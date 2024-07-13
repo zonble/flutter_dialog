@@ -1,12 +1,17 @@
 part of 'dialog_engine.dart';
 
 /// Represents the states for [DialogEngine].
+///
+/// The states are including [DialogEngineIdling], [DialogEngineError],
+/// [DialogEngineListening], [DialogEngineCompleteListening], and
+/// [DialogEnginePlayingTts].
 @immutable
 abstract class DialogEngineState {}
 
 /// Represents that [DialogEngine] is idling.
 class DialogEngineIdling extends DialogEngineState {}
 
+/// Represents that [DialogEngine] has encountered an error.
 class DialogEngineError extends DialogEngineState {
   /// The error message.
   final String errorMessage;

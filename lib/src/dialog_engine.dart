@@ -15,6 +15,10 @@ import 'vui_flow.dart';
 
 part 'dialog_engine_state.dart';
 
+/// The primary class for the dialog engine.
+///
+/// To use this class, you need to create an instance of [DialogEngine] and
+/// provide the necessary engines such as [AsrEngine], [TtsEngine], [NluEngine],
 class DialogEngine implements VuiFlowDelegate {
   /// The ASR (Automatic Speech Recognition) engine.
   final AsrEngine asrEngine;
@@ -28,21 +32,27 @@ class DialogEngine implements VuiFlowDelegate {
   /// The NLG (Natural Language Generating) engine.
   final NlgEngine nlgEngine;
 
+  /// The message that will be played when the intent is unknown.
   String fallbackUnknownIntentMessage = 'Sorry, I do not understand for now.';
+
+  /// The message that will be played when an error occurs.
   String fallbackErrorMessage = 'Sorry, something went wrong.';
 
   final StreamController<DialogEngineState> _stateStream = StreamController();
 
   DialogEngineState _state = DialogEngineIdling();
 
+  /// The current state of the dialog engine.
   DialogEngineState get state => _state;
 
+  /// The stream of the dialog engine state.
   Stream<DialogEngineState> get stateStream => _stateStream.stream;
 
   Map<String, VuiFlow> _vuiFlowMap = {};
   VuiFlow? _currentVuiFlow;
 
-  /// Creates a new instance.
+  /// Creates a new instance by specifying [asrEngine], [ttsEngine], [nluEngine]
+  /// and [nlgEngine].
   DialogEngine({
     required this.asrEngine,
     required this.ttsEngine,
@@ -140,7 +150,7 @@ class DialogEngine implements VuiFlowDelegate {
       await onPlayingPrompt(prompt);
       await stop();
     } catch (e) {
-      // print('NLU error: $e');
+      print('NLU error: $e');
       _currentVuiFlow = null;
       await onPlayingPrompt(fallbackErrorMessage);
       await stop();
@@ -152,8 +162,10 @@ class DialogEngine implements VuiFlowDelegate {
     _stateStream.add(state);
   }
 
+  /// Initializes the dialog engine.
   Future<bool> init() async => await asrEngine.init();
 
+  /// Starts the dialog engine and starts voice recognition.
   Future<bool> start({
     clearCurrentVuiFlow = true,
   }) async {
@@ -172,6 +184,7 @@ class DialogEngine implements VuiFlowDelegate {
     return true;
   }
 
+  /// Stops the dialog engine.
   Future<bool> stop() async {
     if (!asrEngine.isInitialized) {
       return false;
@@ -234,9 +247,7 @@ class DialogEngine implements VuiFlowDelegate {
   }
 
   @override
-  Future<void> onEndingConversation() async {
-    await stop();
-  }
+  Future<void> onEndingConversation() async => await stop();
 
   @override
   Future<String?> onGeneratingResponse(
@@ -251,11 +262,8 @@ class DialogEngine implements VuiFlowDelegate {
 
   @override
   Future<void> onPlayingPrompt(String prompt) async {
-    // print('stop TTS');
     await ttsEngine.stopPlaying();
-    // print('emit TTS state');
     _emit(DialogEnginePlayingTts(prompt: prompt));
-    // print('play TTS prompt');
     await ttsEngine.playPrompt(prompt);
   }
 
@@ -266,9 +274,5 @@ class DialogEngine implements VuiFlowDelegate {
   }
 
   @override
-  Future<void> onStartingAsr() async {
-    // print('onStartingAsr called');
-
-    await start(clearCurrentVuiFlow: false);
-  }
+  Future<void> onStartingAsr() async => await start(clearCurrentVuiFlow: false);
 }

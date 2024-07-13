@@ -46,8 +46,8 @@ class DialogCubit extends Cubit<DialogEngineState> {
     });
     _dialogEngine.registerFlows([
       GreetingVuiFlow(useNlgPrompt: true),
-      QueryTimeVuiFlow(),
-      QueryDateVuiFlow(),
+      // QueryTimeVuiFlow(),
+      // QueryDateVuiFlow(),
       HospitalAppointmentVuiFlow(
           onCheckingIfCanMakeAppointment: (department, date, time) async {
         // print('department $department');
