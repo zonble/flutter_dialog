@@ -30,12 +30,9 @@ class ChatGptNlgEngine extends NlgEngine {
   Future<String?> generateResponse(String utterance,
       {bool useDefaultPrompt = true}) async {
     var systemPrompt = "return any message you are given as JSON.";
-    final systemMessage = OpenAIChatCompletionChoiceMessageModel(
-      content: [
-        OpenAIChatCompletionChoiceMessageContentItemModel.text(systemPrompt),
-      ],
-      role: OpenAIChatMessageRole.assistant,
-    );
+    final systemMessage = OpenAIChatCompletionChoiceMessageModel(content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(systemPrompt),
+    ], role: OpenAIChatMessageRole.assistant);
 
     var prompt = utterance;
 
@@ -51,18 +48,16 @@ class ChatGptNlgEngine extends NlgEngine {
       prompt += 'Current language is: $_language\n';
     }
 
-    final userMessage = OpenAIChatCompletionChoiceMessageModel(
-      content: [OpenAIChatCompletionChoiceMessageContentItemModel.text(prompt)],
-      role: OpenAIChatMessageRole.user,
-    );
+    final userMessage = OpenAIChatCompletionChoiceMessageModel(content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(prompt)
+    ], role: OpenAIChatMessageRole.user);
 
     final requestMessages = [
       systemMessage,
       userMessage,
     ];
 
-    OpenAIChatCompletionModel chatCompletion =
-        await OpenAI.instance.chat.create(
+    final chatCompletion = await OpenAI.instance.chat.create(
       model: chatGptModel,
       responseFormat: {"type": "json_object"},
       seed: 6,
@@ -78,9 +73,7 @@ class ChatGptNlgEngine extends NlgEngine {
   }
 
   @override
-  Future<void> setLanguage(String language) async {
-    _language = language;
-  }
+  Future<void> setLanguage(String language) async => _language = language;
 
   @override
   bool get isInitialized => true;

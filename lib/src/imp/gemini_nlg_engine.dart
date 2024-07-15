@@ -51,9 +51,7 @@ class GeminiNlgEngine extends NlgEngine {
   }
 
   @override
-  Future<void> setLanguage(String language) async {
-    _language = language;
-  }
+  Future<void> setLanguage(String language) async => _language = language;
 
   @override
   bool get isInitialized => true;

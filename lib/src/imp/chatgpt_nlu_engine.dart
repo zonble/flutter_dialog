@@ -40,28 +40,23 @@ class ChatgptNluEngine extends NluEngine {
       systemPrompt += additionalRequirement;
     }
 
-    final systemMessage = OpenAIChatCompletionChoiceMessageModel(
-      content: [
-        OpenAIChatCompletionChoiceMessageContentItemModel.text(systemPrompt),
-      ],
-      role: OpenAIChatMessageRole.assistant,
-    );
+    final systemMessage = OpenAIChatCompletionChoiceMessageModel(content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(systemPrompt),
+    ], role: OpenAIChatMessageRole.assistant);
 
     var prompt =
         'Extract the intent and the slots for the sentence:\n\n$utterance\n\n';
 
-    final userMessage = OpenAIChatCompletionChoiceMessageModel(
-      content: [OpenAIChatCompletionChoiceMessageContentItemModel.text(prompt)],
-      role: OpenAIChatMessageRole.user,
-    );
+    final userMessage = OpenAIChatCompletionChoiceMessageModel(content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(prompt)
+    ], role: OpenAIChatMessageRole.user);
 
     final requestMessages = [
       systemMessage,
       userMessage,
     ];
 
-    OpenAIChatCompletionModel chatCompletion =
-        await OpenAI.instance.chat.create(
+    final chatCompletion = await OpenAI.instance.chat.create(
       model: chatGptModel,
       responseFormat: {"type": "json_object"},
       seed: 6,
