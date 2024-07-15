@@ -28,9 +28,7 @@ class MockTtsEngine extends TtsEngine {
   Future<void> setVolume(double volume) async {}
 
   @override
-  Future<void> stopPlaying() async {
-    onCancel?.call();
-  }
+  Future<void> stopPlaying() async => onCancel?.call();
 
   @override
   bool get isInitialized => true;
