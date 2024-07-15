@@ -2,6 +2,9 @@
 ///
 /// Any subclass must implement the [generateResponse] method.
 abstract class NlgEngine {
+  /// Initializes the NLU engine.
+  Future<bool> init();
+
   /// Generates a response for the given utterance.
   Future<String?> generateResponse(
     String utterance, {
@@ -10,4 +13,7 @@ abstract class NlgEngine {
 
   /// Sets the language.
   Future<void> setLanguage(String language);
+
+  /// Returns true if the engine is initialized.
+  bool get isInitialized;
 }

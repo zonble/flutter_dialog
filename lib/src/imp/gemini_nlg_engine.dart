@@ -10,11 +10,16 @@ class GeminiNlgEngine extends NlgEngine {
   /// The Gemini model name.
   final String geminiModel;
 
+  String? _language;
+
   /// Creates a new instance.
   GeminiNlgEngine({
     required this.apiKey,
     this.geminiModel = 'gemini-1.5-flash-latest',
   });
+
+  @override
+  Future<bool> init() async => true;
 
   @override
   Future<String?> generateResponse(
@@ -45,10 +50,11 @@ class GeminiNlgEngine extends NlgEngine {
     return response.text;
   }
 
-  String? _language;
-
   @override
   Future<void> setLanguage(String language) async {
     _language = language;
   }
+
+  @override
+  bool get isInitialized => true;
 }

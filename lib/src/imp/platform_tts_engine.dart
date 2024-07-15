@@ -46,6 +46,9 @@ class PlatformTtsEngine extends TtsEngine {
   }
 
   @override
+  Future<bool> init() async => true;
+
+  @override
   Future<void> playPrompt(String prompt) async {
     await flutterTTs.speak(prompt);
     var ttsCompleter = Completer();
@@ -84,4 +87,7 @@ class PlatformTtsEngine extends TtsEngine {
   Future<void> setVoice(Map<String, String> voice) async {
     flutterTTs.setVoice(voice);
   }
+
+  @override
+  bool get isInitialized => true;
 }

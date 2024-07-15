@@ -35,6 +35,9 @@ class GeminiNluEngine extends NluEngine {
   });
 
   @override
+  Future<bool> init() async => true;
+
+  @override
   Future<NluIntent> extractIntent(
     String utterance, {
     String? currentIntent,
@@ -81,4 +84,7 @@ class GeminiNluEngine extends NluEngine {
     final intent = NluIntent.fromMap(map);
     return intent;
   }
+
+  @override
+  bool get isInitialized => true;
 }

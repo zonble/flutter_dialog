@@ -4,7 +4,7 @@ class NluIntent {
   final String intent;
 
   /// The slots extracted from the user's utterance.
-  final Map slots;
+  final Map<String, dynamic> slots;
 
   /// Creates a new instance.
   NluIntent({
@@ -36,10 +36,16 @@ abstract class NluEngine {
   Set<String> availableIntents = <String>{};
   Set<String> availableSlots = <String>{};
 
+  /// Initializes the NLU engine.
+  Future<bool> init();
+
   /// Extracts the intent and slots from the given utterance.
   Future<NluIntent> extractIntent(
     String utterance, {
     String? currentIntent,
     String? additionalRequirement,
   });
+
+  /// Returns true if the engine is initialized.
+  bool get isInitialized;
 }
