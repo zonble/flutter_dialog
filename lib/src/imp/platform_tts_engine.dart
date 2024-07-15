@@ -10,12 +10,13 @@ class PlatformTtsEngine extends TtsEngine {
   final flutterTTs = FlutterTts();
   Completer? _ttsCompleter;
 
+  /// Creates a new instance.
   PlatformTtsEngine() {
     flutterTTs.setStartHandler(() {
       onStart?.call();
     });
     flutterTTs.setCompletionHandler(() {
-      print('tts onComplete $_ttsCompleter');
+      // print('tts onComplete $_ttsCompleter');
       onComplete?.call();
       _ttsCompleter?.complete();
       _ttsCompleter = null;
@@ -24,26 +25,29 @@ class PlatformTtsEngine extends TtsEngine {
       onProgress?.call(text, startOffset, endOffset, word);
     });
     flutterTTs.setErrorHandler((msg) {
-      print('tts onError $_ttsCompleter');
+      // print('tts onError $_ttsCompleter');
       onError?.call(msg);
       _ttsCompleter?.complete();
       _ttsCompleter = null;
     });
     flutterTTs.setCancelHandler(() {
-      print('tts onCancel $_ttsCompleter');
+      // print('tts onCancel $_ttsCompleter');
       onCancel?.call();
       _ttsCompleter?.complete();
       _ttsCompleter = null;
     });
     flutterTTs.setPauseHandler(() {
-      print('TTS setPauseHandler');
+      // print('TTS setPauseHandler');
       onPause?.call();
     });
     flutterTTs.setContinueHandler(() {
-      print('TTS setContinueHandler');
+      // print('TTS setContinueHandler');
       onContinue?.call();
     });
   }
+
+  @override
+  Future<bool> init() async => true;
 
   @override
   Future<void> playPrompt(String prompt) async {
@@ -61,27 +65,24 @@ class PlatformTtsEngine extends TtsEngine {
   }
 
   @override
-  Future<void> setLanguage(String language) async {
-    await flutterTTs.setLanguage(language);
-  }
+  Future<void> setLanguage(String language) async =>
+      await flutterTTs.setLanguage(language);
 
   @override
-  Future<void> setPitch(double pitch) async {
-    await flutterTTs.setPitch(pitch);
-  }
+  Future<void> setPitch(double pitch) async => await flutterTTs.setPitch(pitch);
 
   @override
-  Future<void> setSpeechRate(double rate) async {
-    await flutterTTs.setSpeechRate(rate);
-  }
+  Future<void> setSpeechRate(double rate) async =>
+      await flutterTTs.setSpeechRate(rate);
 
   @override
-  Future<void> setVolume(double volume) async {
-    await flutterTTs.setVolume(volume);
-  }
+  Future<void> setVolume(double volume) async =>
+      await flutterTTs.setVolume(volume);
 
   @override
-  Future<void> setVoice(Map<String, String> voice) async {
-    flutterTTs.setVoice(voice);
-  }
+  Future<void> setVoice(Map<String, String> voice) async =>
+      flutterTTs.setVoice(voice);
+
+  @override
+  bool get isInitialized => true;
 }

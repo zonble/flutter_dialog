@@ -3,6 +3,9 @@ import '../interface/tts_engine.dart';
 /// A mock TTS (Text to Speech) engine for testing.
 class MockTtsEngine extends TtsEngine {
   @override
+  Future<bool> init() async => true;
+
+  @override
   Future<void> playPrompt(String prompt) async {
     print('MockTtsEngine play $prompt');
     await Future.delayed(const Duration(milliseconds: 200));
@@ -25,7 +28,8 @@ class MockTtsEngine extends TtsEngine {
   Future<void> setVolume(double volume) async {}
 
   @override
-  Future<void> stopPlaying() async {
-    onCancel?.call();
-  }
+  Future<void> stopPlaying() async => onCancel?.call();
+
+  @override
+  bool get isInitialized => true;
 }

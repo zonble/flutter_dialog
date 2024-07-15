@@ -61,7 +61,6 @@ class PlatformAsrEngine extends AsrEngine {
 
   @override
   Future<bool> stopRecognition() async {
-    // print('stopRecognition called');
     if (!_isInitialized) {
       return false;
     }

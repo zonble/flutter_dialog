@@ -162,14 +162,32 @@ class DialogEngine implements VuiFlowDelegate {
     _stateStream.add(state);
   }
 
+  bool get isInitialized {
+    if (asrEngine.isInitialized == false ||
+        ttsEngine.isInitialized == false ||
+        nlgEngine.isInitialized == false ||
+        nluEngine.isInitialized == false) {
+      return false;
+    }
+    return true;
+  }
+
   /// Initializes the dialog engine.
-  Future<bool> init() async => await asrEngine.init();
+  Future<bool> init() async {
+    if (await asrEngine.init() == false ||
+        await ttsEngine.init() == false ||
+        await nlgEngine.init() == false ||
+        await nluEngine.init() == false) {
+      return false;
+    }
+    return true;
+  }
 
   /// Starts the dialog engine and starts voice recognition.
   Future<bool> start({
     clearCurrentVuiFlow = true,
   }) async {
-    if (!asrEngine.isInitialized) {
+    if (!isInitialized) {
       return false;
     }
 
@@ -186,7 +204,7 @@ class DialogEngine implements VuiFlowDelegate {
 
   /// Stops the dialog engine.
   Future<bool> stop() async {
-    if (!asrEngine.isInitialized) {
+    if (!isInitialized) {
       return false;
     }
 
@@ -269,6 +287,7 @@ class DialogEngine implements VuiFlowDelegate {
 
   @override
   Future<void> onSettingCurrentVuiFlow(VuiFlow? vuiFlow) async {
+    vuiFlow?.delegate = this;
     vuiFlow?.delegate = this;
     _currentVuiFlow = vuiFlow;
   }
