@@ -16,6 +16,9 @@ dependencies:
   speech_to_text: ^6.6.2
   meta: any
   dart_openai: ^5.1.0
+  path_provider: ^2.1.3
+  audioplayers: ^6.0.0
+  uuid: ^4.4.2
 
 dev_dependencies:
   flutter_test:
