@@ -66,7 +66,7 @@ class OpenAiTtsEngine extends TtsEngine {
   ///
   /// See also [OpenAiTtsEngineModel] and [OpenAiTtsEngineModelToString.stringRepresentation ].
   final String model;
-  final _player = AudioPlayer();
+  var _player = AudioPlayer();
 
   var _rate = 1.0;
   var _voice = "nova";
@@ -76,19 +76,30 @@ class OpenAiTtsEngine extends TtsEngine {
     this.model = "tts-1",
   }) {
     print('Set the callbacks');
-    _player.onPlayerComplete.listen((event) {
+
+    _player.onPositionChanged.listen((event) {
+      // print('position $event');
+    });
+
+    _player.onDurationChanged.listen((event) {
+      // print('duration $event');
+    });
+
+    _player.onPlayerComplete.listen((event) async {
+      print('onPlayerComplete');
+      await Future.delayed(const Duration(milliseconds: 2000));
+      onComplete?.call();
       _completer?.complete();
       _completer = null;
-      onComplete?.call();
     });
     _player.onPlayerStateChanged.listen((event) {
-      print('event $event');
-      if (event == PlayerState.stopped ||
-          event == PlayerState.completed ||
-          event == PlayerState.disposed) {
-        _completer?.complete();
-        _completer = null;
-      }
+      print('onPlayerStateChanged $event');
+      // if (event == PlayerState.stopped ||
+      //     event == PlayerState.completed ||
+      //     event == PlayerState.disposed) {
+      //   _completer?.complete();
+      //   _completer = null;
+      // }
     });
     _player.onLog.listen((event) {
       print('log $event');
@@ -103,10 +114,10 @@ class OpenAiTtsEngine extends TtsEngine {
 
   @override
   Future<void> playPrompt(String prompt) async {
-    _completer?.complete();
-    _completer = null;
+    // _completer?.complete();
+    // _completer = null;
 
-    final tmpFilename = "${const Uuid().v4()}.mp3";
+    final tmpFilename = "${const Uuid().v4()}.aac";
     Directory tempDir = await getTemporaryDirectory();
 
     try {
@@ -114,16 +125,17 @@ class OpenAiTtsEngine extends TtsEngine {
         model: model,
         input: prompt,
         voice: _voice,
-        speed: _rate,
-        responseFormat: OpenAIAudioSpeechResponseFormat.mp3,
+        responseFormat: OpenAIAudioSpeechResponseFormat.aac,
         outputDirectory: tempDir,
         outputFileName: tmpFilename,
       );
 
       // print(speechFile.path);
+      await _player.setVolume(_volume);
+      await _player.setPlaybackRate(_rate);
       await _player.play(
         DeviceFileSource(speechFile.path),
-        mode: PlayerMode.lowLatency,
+        mode: PlayerMode.mediaPlayer,
       );
       final completer = Completer();
       _completer = completer;
@@ -144,7 +156,10 @@ class OpenAiTtsEngine extends TtsEngine {
   }
 
   @override
-  Future<void> setSpeechRate(double rate) async => this._rate = rate;
+  Future<void> setSpeechRate(double rate) async {
+    _rate = rate;
+    _player.setPlaybackRate(_rate);
+  }
 
   /// The voice to use.
   ///
@@ -158,9 +173,13 @@ class OpenAiTtsEngine extends TtsEngine {
   Future<void> setVoice(Map<String, String> voice) async =>
       _voice = voice.entries.first.value;
 
+  double _volume = 1.0;
+
   @override
-  Future<void> setVolume(double volume) async =>
-      await _player.setVolume(volume);
+  Future<void> setVolume(double volume) async {
+    _volume = volume;
+    await _player.setVolume(volume);
+  }
 
   @override
   Future<void> stopPlaying() async {

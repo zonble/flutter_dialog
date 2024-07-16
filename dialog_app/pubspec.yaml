@@ -15,8 +15,9 @@ dependencies:
   url_launcher: ^6.3.0
   flutter_dialog:
     path: ../.
-  meta:
-  intl:
+  meta: any
+  intl: any
+  dart_openai: any
 
 dev_dependencies:
   flutter_test:

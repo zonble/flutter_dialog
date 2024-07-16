@@ -67,10 +67,15 @@ class DialogEngine implements VuiFlowDelegate {
       }
     };
     asrEngine.onError = (error) async {
-      // print(error);
+      print('asrEngine $error');
+      print(error);
+      if (_currentVuiFlow != null) {
+        return;
+      }
+
       await ttsEngine.stopPlaying();
       await asrEngine.stopRecognition();
-      _emit(DialogEngineError(errorMessage: error));
+      _emit(DialogEngineError(errorMessage: '$error'));
     };
     asrEngine.onStatusChange = (state) async {
       if (state == AsrEngineState.listening) {
@@ -88,9 +93,7 @@ class DialogEngine implements VuiFlowDelegate {
 
       if (_currentVuiFlow != null) {
         final intent = NluIntent(intent: '', slots: {});
-        await _currentVuiFlow
-            ?.handle(intent)
-            .timeout(const Duration(seconds: 60));
+        await _currentVuiFlow?.handle(intent);
         return;
       }
 
@@ -133,16 +136,12 @@ class DialogEngine implements VuiFlowDelegate {
       // print('extractIntent done');
       if (_currentVuiFlow != null) {
         // print('_currentVuiFlow $_currentVuiFlow is handling intent');
-        await _currentVuiFlow
-            ?.handle(intent, utterance: input)
-            .timeout(const Duration(seconds: 60));
+        await _currentVuiFlow?.handle(intent, utterance: input);
         return;
       }
       final flow = _vuiFlowMap[intent.intent];
       if (flow != null) {
-        await flow
-            .handle(intent, utterance: input)
-            .timeout(const Duration(seconds: 60));
+        await flow.handle(intent, utterance: input);
         return;
       }
       final prompt = await nlgEngine.generateResponse(input) ??
@@ -150,6 +149,13 @@ class DialogEngine implements VuiFlowDelegate {
       await onPlayingPrompt(prompt);
       await stop();
     } catch (e) {
+      if (_currentVuiFlow != null) {
+        // print('_currentVuiFlow $_currentVuiFlow is handling intent');
+        final intent = NluIntent(intent: '', slots: {});
+        await _currentVuiFlow?.handle(intent, utterance: input);
+        return;
+      }
+
       print('NLU error: $e');
       _currentVuiFlow = null;
       await onPlayingPrompt(fallbackErrorMessage);
