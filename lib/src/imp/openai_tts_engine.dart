@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
@@ -66,12 +67,33 @@ class OpenAiTtsEngine extends TtsEngine {
   /// See also [OpenAiTtsEngineModel] and [OpenAiTtsEngineModelToString.stringRepresentation ].
   final String model;
   final _player = AudioPlayer();
+
   var _rate = 1.0;
   var _voice = "nova";
+  Completer<void>? _completer;
 
   OpenAiTtsEngine({
     this.model = "tts-1",
-  });
+  }) {
+    print('Set the callbacks');
+    _player.onPlayerComplete.listen((event) {
+      _completer?.complete();
+      _completer = null;
+      onComplete?.call();
+    });
+    _player.onPlayerStateChanged.listen((event) {
+      print('event $event');
+      if (event == PlayerState.stopped ||
+          event == PlayerState.completed ||
+          event == PlayerState.disposed) {
+        _completer?.complete();
+        _completer = null;
+      }
+    });
+    _player.onLog.listen((event) {
+      print('log $event');
+    });
+  }
 
   @override
   Future<bool> init() async => true;
@@ -81,21 +103,34 @@ class OpenAiTtsEngine extends TtsEngine {
 
   @override
   Future<void> playPrompt(String prompt) async {
+    _completer?.complete();
+    _completer = null;
+
     final tmpFilename = "${const Uuid().v4()}.mp3";
     Directory tempDir = await getTemporaryDirectory();
 
-    final speechFile = await OpenAI.instance.audio.createSpeech(
-      model: model,
-      input: prompt,
-      voice: _voice,
-      speed: _rate,
-      responseFormat: OpenAIAudioSpeechResponseFormat.mp3,
-      outputDirectory: tempDir,
-      outputFileName: tmpFilename,
-    );
+    try {
+      final speechFile = await OpenAI.instance.audio.createSpeech(
+        model: model,
+        input: prompt,
+        voice: _voice,
+        speed: _rate,
+        responseFormat: OpenAIAudioSpeechResponseFormat.mp3,
+        outputDirectory: tempDir,
+        outputFileName: tmpFilename,
+      );
 
-    // print(speechFile.path);
-    _player.play(DeviceFileSource(speechFile.path));
+      // print(speechFile.path);
+      await _player.play(
+        DeviceFileSource(speechFile.path),
+        mode: PlayerMode.lowLatency,
+      );
+      final completer = Completer();
+      _completer = completer;
+      await completer.future;
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 
   @override
@@ -128,5 +163,10 @@ class OpenAiTtsEngine extends TtsEngine {
       await _player.setVolume(volume);
 
   @override
-  Future<void> stopPlaying() async => await _player.stop();
+  Future<void> stopPlaying() async {
+    onCancel?.call();
+    await _player.stop();
+    _completer?.complete();
+    _completer = null;
+  }
 }
