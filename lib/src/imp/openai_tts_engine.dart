@@ -7,12 +7,14 @@ import 'package:uuid/uuid.dart';
 
 import '../interface/tts_engine.dart';
 
+/// Models for [OpenAiTtsEngine]
 enum OpenAiTtsEngineModel {
   tts1,
   tts1Hd,
 }
 
 extension OpenAiTtsEngineModelToString on OpenAiTtsEngineModel {
+  /// Converts the model to a string representation.
   String get stringRepresentation {
     switch (this) {
       case OpenAiTtsEngineModel.tts1:
@@ -23,6 +25,7 @@ extension OpenAiTtsEngineModelToString on OpenAiTtsEngineModel {
   }
 }
 
+/// Voices for [OpenAiTtsEngine]
 enum OpenAiTtsEngineVoice {
   alloy,
   echo,
@@ -33,6 +36,7 @@ enum OpenAiTtsEngineVoice {
 }
 
 extension OpenAiTtsEngineVoiceToString on OpenAiTtsEngineVoice {
+  /// Converts the voice to a string representation.
   String get stringRepresentation {
     switch (this) {
       case OpenAiTtsEngineVoice.alloy:
@@ -59,7 +63,7 @@ extension OpenAiTtsEngineVoiceToString on OpenAiTtsEngineVoice {
 class OpenAiTtsEngine extends TtsEngine {
   /// "tts-1" or "tts-1-hd".
   ///
-  /// See also [OpenAiTtsEngineModel].
+  /// See also [OpenAiTtsEngineModel] and [OpenAiTtsEngineModelToString.stringRepresentation ].
   final String model;
   final _player = AudioPlayer();
   var _rate = 1.0;
@@ -113,10 +117,11 @@ class OpenAiTtsEngine extends TtsEngine {
   /// - tts-1-hd: alloy, echo, fable, onyx, nova, and shimmer (configurable,
   ///   uses OpenAI samples by default)
   ///
-  /// See also [OpenAiTtsEngineVoice].
+  /// See also [OpenAiTtsEngineVoice] and
+  /// [OpenAiTtsEngineVoiceToString.stringRepresentation].
   @override
   Future<void> setVoice(Map<String, String> voice) async =>
-      this._voice = voice.entries.first.value;
+      _voice = voice.entries.first.value;
 
   @override
   Future<void> setVolume(double volume) async =>
