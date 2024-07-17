@@ -68868,14 +68868,14 @@ break
 case 1:return A.F(q,r)}})
 return A.G($async$bN,r)},
 tU(a,b,c){return this.a3K(a,b,c)},
-a3K(a,b,c){var s=0,r=A.H(t.kN),q,p=this,o,n,m,l,k,j,i
+a3K(a,b,c){var s=0,r=A.H(t.kN),q,p=this,o,n,m,l,k,j,i,h
 var $async$tU=A.I(function(d,e){if(d===1)return A.E(e,r)
-while(true)switch(s){case 0:j=A.ala(p.c,new A.WZ("application/json"),"gemini-1.5-flash-latest")
-i="Extract the intent and the slots for the sentence:\n\n"+a+"\n\nThe output is in JSON without any formatting."+("Valid intents are including: "+p.a.be(0,",")+".")
-if(c!=null)i+="The current indent is "+c+"."
+while(true)switch(s){case 0:i=A.ala(p.c,new A.WZ("application/json"),"gemini-1.5-flash-latest")
+h="Extract the intent and the slots for the sentence:\n\n"+a+"\n\nThe output is in JSON without any formatting."+("Valid intents are including: "+p.a.be(0,",")+".")
+if(c!=null)h+="The current indent is "+c+"."
 o=p.b.be(0,",")
 s=3
-return A.z(j.Ck(A.b([new A.j7("user",A.b([new A.fQ(i+("Valid slots are including: "+o+".")+"Intents are in Pascal case.If the intent is not in the valid intents, return null."+b)],t.Uz))],t.kQ)),$async$tU)
+return A.z(i.Ck(A.b([new A.j7("user",A.b([new A.fQ(h+("Valid slots are including: "+o+".")+"Intents are in Pascal case.If the intent is not in the valid intents, return null."+b)],t.Uz))],t.kQ)),$async$tU)
 case 3:n=e.ghq(0)
 if(n==null)throw A.d(new A.Em("Failed to extract response from jsonString "+A.h(n)+"."))
 A.j0("jsonString "+n)
@@ -68884,8 +68884,11 @@ A.j0("map "+A.h(m))
 o=J.ab(m)
 l=o.i(m,"intent")
 if(l==null)l=""
-k=o.i(m,"slots")
-if(k==null||!t.f.b(k))k=B.ez
+if(J.e(l,"")){l=o.i(m,"Intent")
+if(l==null)l=""}k=o.i(m,"slots")
+j=k==null
+if(j)l=o.i(m,"Slots")
+if(j||!t.f.b(k))k=B.ez
 q=new A.cQ(l,t.a.a(k))
 s=1
 break
