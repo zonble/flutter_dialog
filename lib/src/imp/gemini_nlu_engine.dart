@@ -25,7 +25,7 @@ class GeminiNluEngine extends NluEngine {
   /// The API key.
   final String apiKey;
 
-  /// The Gemini model name.
+  /// The Gemini model name. See also [GeminiModels] and [GeminiModelNameFactory].
   final String geminiModel;
 
   /// Creates a new instance.

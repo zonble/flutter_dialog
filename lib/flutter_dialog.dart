@@ -5,6 +5,7 @@ export 'src/dialog_engine.dart';
 export 'src/imp/chatgpt_models.dart';
 export 'src/imp/chatgpt_nlg_engine.dart';
 export 'src/imp/chatgpt_nlu_engine.dart';
+export 'src/imp/gemini_models.dart';
 export 'src/imp/gemini_nlg_engine.dart';
 export 'src/imp/gemini_nlu_engine.dart';
 export 'src/imp/mock_asr_engine.dart';

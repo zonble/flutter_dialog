@@ -29,13 +29,26 @@ abstract class TtsEngine {
   /// Set the voice.
   Future<void> setVoice(Map<String, String> voice);
 
+  /// Called when the TTS engine starts playing.
   Function()? onStart;
+
+  /// Called when the TTS engine completes playing.
   Function()? onComplete;
+
+  /// Called when the TTS engine is updating the playing progress.
   Function(String text, int startOffset, int endOffset, String word)?
       onProgress;
+
+  /// Called when an error occurs.
   Function(String msg)? onError;
+
+  /// Called when the TTS engine is canceled.
   Function()? onCancel;
+
+  /// Called when the TTS engine is paused.
   Function()? onPause;
+
+  /// Called when the TTS engine is resumed.
   Function()? onContinue;
 
   /// Returns true if the engine is initialized.

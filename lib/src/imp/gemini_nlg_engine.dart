@@ -7,7 +7,7 @@ class GeminiNlgEngine extends NlgEngine {
   /// The API key.
   final String apiKey;
 
-  /// The Gemini model name.
+  /// The Gemini model name. See also [GeminiModels] and [GeminiModelNameFactory].
   final String geminiModel;
 
   String? _language;
