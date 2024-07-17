@@ -1,4 +1,6 @@
-/// See https://platform.openai.com/docs/models/gpt-4-turbo-and-gpt-4
+/// The ChatGPT models.
+///
+/// See https://platform.openai.com/docs/models
 enum ChatgptModels {
   gpt4o,
   gpt4o_20240513,

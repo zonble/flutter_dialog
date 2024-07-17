@@ -9,6 +9,8 @@ import 'package:uuid/uuid.dart';
 import '../interface/tts_engine.dart';
 
 /// Models for [OpenAiTtsEngine]
+///
+/// See https://platform.openai.com/docs/models
 enum OpenAiTtsEngineModel {
   tts1,
   tts1Hd,
@@ -27,6 +29,8 @@ extension OpenAiTtsEngineModelToString on OpenAiTtsEngineModel {
 }
 
 /// Voices for [OpenAiTtsEngine]
+///
+/// See https://platform.openai.com/docs/guides/text-to-speech/overview
 enum OpenAiTtsEngineVoice {
   alloy,
   echo,
@@ -64,9 +68,9 @@ extension OpenAiTtsEngineVoiceToString on OpenAiTtsEngineVoice {
 class OpenAiTtsEngine extends TtsEngine {
   /// "tts-1" or "tts-1-hd".
   ///
-  /// See also [OpenAiTtsEngineModel] and [OpenAiTtsEngineModelToString.stringRepresentation ].
+  /// See also [OpenAiTtsEngineModel] and [OpenAiTtsEngineModelToString.stringRepresentation].
   final String model;
-  var _player = AudioPlayer();
+  final _player = AudioPlayer();
 
   var _rate = 1.0;
   var _voice = "nova";
