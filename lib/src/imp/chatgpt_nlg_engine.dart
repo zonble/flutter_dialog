@@ -59,19 +59,23 @@ class ChatGptNlgEngine extends NlgEngine {
       userMessage,
     ];
 
-    final chatCompletion = await OpenAI.instance.chat.create(
-      model: chatGptModel,
-      responseFormat: {"type": "json_object"},
-      seed: 6,
-      messages: requestMessages,
-      temperature: 0.2,
-      maxTokens: 500,
-    );
+    try {
+      final chatCompletion = await OpenAI.instance.chat.create(
+        model: chatGptModel,
+        responseFormat: {"type": "json_object"},
+        seed: 6,
+        messages: requestMessages,
+        temperature: 0.2,
+        maxTokens: 500,
+      );
 
-    final responseText =
-        chatCompletion.choices.first.message.content?.first.text;
-    final responseMap = json.decode(responseText ?? '{}');
-    return responseMap['response'] ?? '';
+      final responseText =
+          chatCompletion.choices.first.message.content?.first.text;
+      final responseMap = json.decode(responseText ?? '{}');
+      return responseMap['response'] as String?;
+    } catch (e) {
+      return null;
+    }
   }
 
   @override

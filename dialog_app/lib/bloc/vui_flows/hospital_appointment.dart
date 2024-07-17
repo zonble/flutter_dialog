@@ -191,7 +191,7 @@ class HospitalAppointmentVuiFlow extends VuiFlow {
   String get intent => 'HospitalAppointment';
 
   @override
-  List<String> get slots => ['Department', 'Date', 'Time'];
+  Set<String> get slots => {'Department', 'Date', 'Time'};
 
   @override
   String? get additionalNluPrompt {

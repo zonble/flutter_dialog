@@ -36,10 +36,10 @@ class ConfirmVuiFlow extends VuiFlow {
   }) async {
     if (commonAffirmationIntents.contains(intent.intent)) {
       positiveFlow.delegate = delegate;
-      positiveFlow.handle(NluIntent(intent: '', slots: {}));
+      positiveFlow.handle(NluIntent.empty());
     } else if (commonNegationIntents.contains(intent.intent)) {
       negativeFlow.delegate = delegate;
-      negativeFlow.handle(NluIntent(intent: '', slots: {}));
+      negativeFlow.handle(NluIntent.empty());
     } else {
       errorCount += 1;
       if (errorCount >= _maxErrorCount) {
@@ -63,5 +63,13 @@ class ConfirmVuiFlow extends VuiFlow {
   String get intent => '';
 
   @override
-  List<String> get slots => <String>[];
+  Set<NluIntentShortcut> get proposedShortcuts => {
+        ('Confirm', NluIntent(intent: 'Confirm', slots: {})),
+        ('OK', NluIntent(intent: 'Agree', slots: {})),
+        ('Okay', NluIntent(intent: 'Agree', slots: {})),
+        ('Yes', NluIntent(intent: 'Agree', slots: {})),
+        ('Cancel', NluIntent(intent: 'Cancel', slots: {})),
+        ('No', NluIntent(intent: 'Deny', slots: {})),
+        ('Reject', NluIntent(intent: 'Reject', slots: {})),
+      };
 }

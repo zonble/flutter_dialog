@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 
 import 'common_intents.dart';
@@ -48,7 +49,8 @@ class DialogEngine implements VuiFlowDelegate {
   /// The stream of the dialog engine state.
   Stream<DialogEngineState> get stateStream => _stateStream.stream;
 
-  Map<String, VuiFlow> _vuiFlowMap = {};
+  final Map<String, VuiFlow> _vuiFlowMap = {};
+  final Map<String, NluIntent> _intentShortcutMap = {};
   VuiFlow? _currentVuiFlow;
 
   /// Creates a new instance by specifying [asrEngine], [ttsEngine], [nluEngine]
@@ -92,7 +94,7 @@ class DialogEngine implements VuiFlowDelegate {
       }
 
       if (_currentVuiFlow != null) {
-        final intent = NluIntent(intent: '', slots: {});
+        final intent = NluIntent.empty();
         await _currentVuiFlow?.handle(intent);
         return;
       }
@@ -126,13 +128,21 @@ class DialogEngine implements VuiFlowDelegate {
 
     try {
       // print('extractIntent ...');
-      _updateIntents();
-      final additionalPrompt = _collectionAdditionalNluPrompt();
-      final intent = await nluEngine.extractIntent(
-        input,
-        currentIntent: _currentVuiFlow?.intent,
-        additionalRequirement: additionalPrompt,
-      );
+      final intent = await () async {
+        final shortcutIntent = _intentShortcutMap[input];
+        if (shortcutIntent != null) {
+          return shortcutIntent;
+        }
+
+        _updateIntents();
+        final additionalPrompt = _collectionAdditionalNluPrompt();
+        final intent = await nluEngine.extractIntent(
+          input,
+          currentIntent: _currentVuiFlow?.intent,
+          additionalRequirement: additionalPrompt,
+        );
+        return intent;
+      }();
       // print('extractIntent done');
       if (_currentVuiFlow != null) {
         // print('_currentVuiFlow $_currentVuiFlow is handling intent');
@@ -151,7 +161,7 @@ class DialogEngine implements VuiFlowDelegate {
     } catch (e) {
       if (_currentVuiFlow != null) {
         // print('_currentVuiFlow $_currentVuiFlow is handling intent');
-        final intent = NluIntent(intent: '', slots: {});
+        final intent = NluIntent.empty();
         await _currentVuiFlow?.handle(intent, utterance: input);
         return;
       }
@@ -224,15 +234,25 @@ class DialogEngine implements VuiFlowDelegate {
 
   /// Resets the list of [VuiFlow].
   void resetFlows() {
-    _vuiFlowMap = {};
+    _vuiFlowMap.clear();
     _updateIntents();
+  }
+
+  /// Register a shortcut for a specific [NluIntent].
+  void registerShortcut(String shortcut, NluIntent intent) {
+    _intentShortcutMap[shortcut] = intent;
   }
 
   /// Register a list of [VuiFlow].
   void registerFlows(List<VuiFlow> flows) {
     for (final flow in flows) {
-      _vuiFlowMap[flow.intent] = flow;
       flow.delegate = this;
+      _vuiFlowMap[flow.intent] = flow;
+      final shortcuts = flow.proposedShortcuts;
+      for (final shortcut in shortcuts) {
+        final (utterance, intent) = shortcut;
+        registerShortcut(utterance, intent);
+      }
     }
     _updateIntents();
   }

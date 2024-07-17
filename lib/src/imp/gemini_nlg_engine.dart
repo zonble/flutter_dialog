@@ -49,8 +49,12 @@ class GeminiNlgEngine extends NlgEngine {
     }
 
     final content = [Content.text(prompt)];
-    final response = await model.generateContent(content);
-    return response.text;
+    try {
+      final response = await model.generateContent(content);
+      return response.text;
+    } catch (e) {
+      return null;
+    }
   }
 
   @override

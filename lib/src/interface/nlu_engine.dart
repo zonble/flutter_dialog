@@ -9,21 +9,20 @@ class NluIntent {
   /// Creates a new instance.
   NluIntent({
     required this.intent,
-    required this.slots,
+    this.slots = const {},
   });
 
+  /// Creates an empty instance.
+  factory NluIntent.empty() => NluIntent(intent: '', slots: {});
+
   /// Creates a new instance from a map.
-  factory NluIntent.fromMap(Map json) {
-    return NluIntent(
-      intent: json['intent'] ?? '',
-      slots: json['slots'] ?? [],
-    );
-  }
+  factory NluIntent.fromMap(Map json) => NluIntent(
+        intent: json['intent'] ?? '',
+        slots: json['slots'] ?? [],
+      );
 
   @override
-  String toString() {
-    return '${super.toString()} intent: $intent, slots: $slots';
-  }
+  String toString() => '${super.toString()} intent: $intent, slots: $slots';
 }
 
 /// Represents the NLU engine.

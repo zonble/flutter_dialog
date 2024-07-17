@@ -90,5 +90,5 @@ class LeaveApplicationVuiFlow extends VuiFlow {
   String get intent => 'LeaveApplication';
 
   @override
-  List<String> get slots => ['Reason', 'Date'];
+  Set<String> get slots => {'Reason', 'Date'};
 }

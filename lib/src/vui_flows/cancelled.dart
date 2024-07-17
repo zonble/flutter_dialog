@@ -20,7 +20,4 @@ class CancelledVuiFlow extends VuiFlow {
 
   @override
   String get intent => '';
-
-  @override
-  List<String> get slots => [];
 }

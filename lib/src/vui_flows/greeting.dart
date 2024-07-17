@@ -41,4 +41,12 @@ class GreetingVuiFlow extends VuiFlow {
 
   @override
   String get intent => 'Greeting';
+
+  @override
+  Set<NluIntentShortcut> get proposedShortcuts => {
+        ('Hi', NluIntent(intent: 'Greeting', slots: {})),
+        ('Hello', NluIntent(intent: 'Greeting', slots: {})),
+        ('Hi there', NluIntent(intent: 'Greeting', slots: {})),
+        ('Hey', NluIntent(intent: 'Greeting', slots: {})),
+      };
 }

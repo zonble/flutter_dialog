@@ -1,4 +1,7 @@
-import '../flutter_dialog.dart';
+import 'interface/nlu_engine.dart';
+
+/// The type definition for a NLU intent.
+typedef NluIntentShortcut = (String utterance, NluIntent intent);
 
 /// The delegate for [VuiFlow].
 abstract class VuiFlowDelegate {
@@ -41,7 +44,10 @@ abstract class VuiFlow {
   String get intent => '';
 
   /// The slots that the VUI flow can handle.
-  List<String> get slots => [];
+  Set<String> get slots => {};
+
+  /// The proposed shortcuts by the VUI flow.
+  Set<NluIntentShortcut> get proposedShortcuts => {};
 
   /// The additional NLU prompt that the NLU engine to extract the intent and
   /// slots.
