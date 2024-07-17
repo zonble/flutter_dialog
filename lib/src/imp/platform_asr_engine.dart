@@ -4,6 +4,10 @@ import '../interface/asr_engine.dart';
 
 const _pauseForSeconds = 3;
 
+/// An ASR (Automatic Speech Recognition) engine that is based on The
+/// [speech_to_text](https://pub.dev/packages/speech_to_text) package.
+///
+/// The engine works on iOS, Android and Web.
 class PlatformAsrEngine extends AsrEngine {
   /// The default locale ID.
   var _localeId = 'en_US';

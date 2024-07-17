@@ -3,6 +3,10 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_dialog/flutter_dialog.dart';
 
+// Note: Please create your own `api_key.dart` file, and the content should be:
+// ```dart
+// const geminiApiKey = 'YOUR_API_KEY';
+// ```
 import 'api_key.dart';
 import 'teams_helper.dart';
 import 'vui_flows/hospital_appointment.dart';

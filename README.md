@@ -17,6 +17,12 @@ By default:
 You can easily customize your dialog flow and substitute the default engines
 with your own implementations.
 
+Since the package is built on various implementations of the engines, what
+platform that the engine support is depending on the implementation. For
+example, the default ASR engine uses the `speech_to_text` package, which only
+supports iOS, Android and Web platforms. If you want to support other platforms,
+you need to implement your own ASR engine.
+
 ## Usage
 
 The following example demonstrates how to create a dialog engine with a minimal
@@ -73,4 +79,3 @@ Finally, you can start the dialog engine to listen to user input.
 ## License
 
 The package is released under the MIT license. See [LICENSE](LICENSE).
-

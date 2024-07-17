@@ -4,7 +4,11 @@ import 'package:flutter_tts/flutter_tts.dart';
 
 import '../interface/tts_engine.dart';
 
-/// Please refer to https://pub.dev/packages/flutter_tts to update your Android
+/// A TTS (Text To Speech) engine that is based on The
+/// [flutter_tts](https://pub.dev/packages/flutter_tts) package. It works on
+/// iOS, Android, macOS, Windows, and Web.
+///
+/// Please refer to official documentation of flutter_tts to update your Android
 /// manifest and iOS configuration.
 class PlatformTtsEngine extends TtsEngine {
   final flutterTTs = FlutterTts();
@@ -85,4 +89,10 @@ class PlatformTtsEngine extends TtsEngine {
 
   @override
   bool get isInitialized => true;
+
+  /// A wrapper that returns available voices.
+  Future<dynamic> getVoices() async {
+    final voices = await flutterTTs.getVoices;
+    return voices;
+  }
 }
