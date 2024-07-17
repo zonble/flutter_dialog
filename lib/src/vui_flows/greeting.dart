@@ -10,6 +10,7 @@ class GreetingVuiFlow extends VuiFlow {
   /// If true, let the NLG engine generate the message to the users.
   var useNlgPrompt = false;
 
+  /// Create a new instance of [GreetingVuiFlow].
   GreetingVuiFlow({
     this.greetingMessage = 'Hello. How can I help you?',
     this.useNlgPrompt = false,

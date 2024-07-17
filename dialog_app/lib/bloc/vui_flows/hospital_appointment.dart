@@ -201,4 +201,12 @@ class HospitalAppointmentVuiFlow extends VuiFlow {
     message += ' today is $today (Y-M-D)';
     return message;
   }
+
+  @override
+  Set<NluIntentShortcut> get proposedShortcuts => {
+        ('掛號', NluIntent(intent: 'HospitalAppointment', slots: {})),
+        ('我要掛號', NluIntent(intent: 'HospitalAppointment', slots: {})),
+        ('我要預約', NluIntent(intent: 'HospitalAppointment', slots: {})),
+        ('掛號看病', NluIntent(intent: 'HospitalAppointment', slots: {})),
+      };
 }

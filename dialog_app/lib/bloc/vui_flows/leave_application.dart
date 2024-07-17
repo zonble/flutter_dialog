@@ -91,4 +91,10 @@ class LeaveApplicationVuiFlow extends VuiFlow {
 
   @override
   Set<String> get slots => {'Reason', 'Date'};
+
+  @override
+  Set<NluIntentShortcut> get proposedShortcuts => {
+        ('我要請假', NluIntent(intent: 'LeaveApplication', slots: {})),
+        ('我想請假', NluIntent(intent: 'LeaveApplication', slots: {})),
+      };
 }
