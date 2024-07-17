@@ -29,6 +29,9 @@ class GeminiNlgEngine extends NlgEngine {
     final model = GenerativeModel(
       model: geminiModel,
       apiKey: apiKey,
+      generationConfig: GenerationConfig(
+        responseMimeType: "application/json",
+      ),
     );
 
     var prompt = utterance;

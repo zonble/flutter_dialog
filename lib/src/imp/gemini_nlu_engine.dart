@@ -64,22 +64,12 @@ class GeminiNluEngine extends NluEngine {
 
     final content = [Content.text(prompt)];
     final response = await model.generateContent(content);
-    final string = response.text;
-    if (string == null) {
-      throw const GeminiNluEngineError('Failed to generate response.');
-    }
-    final RegExp regex = RegExp(r'\{.*\}');
-    final match = regex.firstMatch(string);
-    if (match == null) {
-      throw GeminiNluEngineError(
-          'Failed to extract response from string $string.');
-    }
-    final jsonString = match.group(0);
+    final jsonString = response.text;
     if (jsonString == null) {
       throw GeminiNluEngineError(
           'Failed to extract response from jsonString $jsonString.');
     }
-    print('jsonString $jsonString');
+
     final map = json.decode(jsonString);
     final intent = NluIntent.fromMap(map);
     return intent;
