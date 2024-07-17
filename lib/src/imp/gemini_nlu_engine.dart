@@ -46,6 +46,9 @@ class GeminiNluEngine extends NluEngine {
     final model = GenerativeModel(
       model: geminiModel,
       apiKey: apiKey,
+      generationConfig: GenerationConfig(
+        responseMimeType: "application/json",
+      ),
     );
 
     var prompt =
@@ -69,8 +72,10 @@ class GeminiNluEngine extends NluEngine {
       throw GeminiNluEngineError(
           'Failed to extract response from jsonString $jsonString.');
     }
+    print('jsonString $jsonString');
 
     final map = json.decode(jsonString);
+    print('map $map');
     final intent = NluIntent.fromMap(map);
     return intent;
   }

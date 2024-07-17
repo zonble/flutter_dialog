@@ -53,6 +53,8 @@ class DialogEngine implements VuiFlowDelegate {
   final Map<String, NluIntent> _intentShortcutMap = {};
   VuiFlow? _currentVuiFlow;
 
+  var shouldContinueConversationWhenUsingNlgResponses = true;
+
   /// Creates a new instance by specifying [asrEngine], [ttsEngine], [nluEngine]
   /// and [nlgEngine].
   DialogEngine({
@@ -69,8 +71,8 @@ class DialogEngine implements VuiFlowDelegate {
       }
     };
     asrEngine.onError = (error) async {
-      print('asrEngine $error');
-      print(error);
+      // print('asrEngine $error');
+      // print(error);
       if (_currentVuiFlow != null) {
         return;
       }
@@ -157,8 +159,12 @@ class DialogEngine implements VuiFlowDelegate {
       final prompt = await nlgEngine.generateResponse(input) ??
           fallbackUnknownIntentMessage;
       await onPlayingPrompt(prompt);
-      await stop();
-    } catch (e) {
+      if (shouldContinueConversationWhenUsingNlgResponses) {
+        await start();
+      } else {
+        await stop();
+      }
+    } catch (e, s) {
       if (_currentVuiFlow != null) {
         // print('_currentVuiFlow $_currentVuiFlow is handling intent');
         final intent = NluIntent.empty();
@@ -166,7 +172,8 @@ class DialogEngine implements VuiFlowDelegate {
         return;
       }
 
-      print('NLU error: $e');
+      // print('NLU error: $e');
+      // print(s);
       _currentVuiFlow = null;
       await onPlayingPrompt(fallbackErrorMessage);
       await stop();

@@ -43,8 +43,8 @@ class ChatGptNlgEngine extends NlgEngine {
       prompt += 'The response should be less than 30 words.\n';
       prompt += 'The response should not be another question.\n';
       prompt += 'The response should not contain emoji.\n';
-      prompt += 'If the sentence is lacking of context.'
-          ' Just say you do not understand.';
+      prompt += 'If the sentence is lacking of context,'
+          ' just say you do not understand.';
     }
     if (_language != null) {
       prompt += 'Current language is: $_language\n';

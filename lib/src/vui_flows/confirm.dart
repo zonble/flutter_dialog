@@ -16,7 +16,7 @@ class ConfirmVuiFlow extends VuiFlow {
   var maxErrorMessage = 'Sorry, too many errors.';
 
   /// The message to be played when the user makes an error.
-  var errorMessage = 'Sorry, I do not understand. Please say ?';
+  var errorMessage = 'Sorry, I do not understand. Please say again?';
 
   /// The error count.
   var errorCount = 0;
@@ -26,7 +26,7 @@ class ConfirmVuiFlow extends VuiFlow {
     required this.positiveFlow,
     required this.negativeFlow,
     this.maxErrorMessage = 'Sorry, too many errors.',
-    this.errorMessage = 'Sorry, I do not understand. Please say ?',
+    this.errorMessage = 'Sorry, I do not understand. Please say again?',
   });
 
   @override

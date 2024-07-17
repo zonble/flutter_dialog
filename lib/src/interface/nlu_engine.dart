@@ -16,10 +16,17 @@ class NluIntent {
   factory NluIntent.empty() => NluIntent(intent: '', slots: {});
 
   /// Creates a new instance from a map.
-  factory NluIntent.fromMap(Map json) => NluIntent(
-        intent: json['intent'] ?? '',
-        slots: json['slots'] ?? [],
-      );
+  factory NluIntent.fromMap(Map json) {
+    final intent = json['intent'] ?? '';
+    var slots = json['slots'];
+    if (slots == null || slots is! Map) {
+      slots = const <String, dynamic>{};
+    }
+    return NluIntent(
+      intent: intent,
+      slots: slots as Map<String, dynamic>,
+    );
+  }
 
   @override
   String toString() => '${super.toString()} intent: $intent, slots: $slots';
