@@ -14,6 +14,8 @@ class ChatGptNlgEngine extends NlgEngine {
   /// The ChatGPT model to use.
   ///
   /// See https://platform.openai.com/docs/models
+  ///
+  /// See also [ChatgptModels] and [ChatgptModelsToSting.stringRepresentation].
   final String chatGptModel;
 
   String? _language;

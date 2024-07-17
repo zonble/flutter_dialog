@@ -86,23 +86,17 @@ class OpenAiTtsEngine extends TtsEngine {
     });
 
     _player.onPlayerComplete.listen((event) async {
-      print('onPlayerComplete');
+      // print('onPlayerComplete');
       await Future.delayed(const Duration(milliseconds: 2000));
       onComplete?.call();
       _completer?.complete();
       _completer = null;
     });
     _player.onPlayerStateChanged.listen((event) {
-      print('onPlayerStateChanged $event');
-      // if (event == PlayerState.stopped ||
-      //     event == PlayerState.completed ||
-      //     event == PlayerState.disposed) {
-      //   _completer?.complete();
-      //   _completer = null;
-      // }
+      // print('onPlayerStateChanged $event');
     });
     _player.onLog.listen((event) {
-      print('log $event');
+      // print('log $event');
     });
   }
 

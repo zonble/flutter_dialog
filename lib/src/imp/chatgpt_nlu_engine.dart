@@ -14,6 +14,8 @@ class ChatgptNluEngine extends NluEngine {
   /// The ChatGPT model to use.
   ///
   /// See https://platform.openai.com/docs/models
+  ///
+  /// See also [ChatgptModels] and [ChatgptModelsToSting.stringRepresentation].
   final String chatGptModel;
 
   /// Creates a new instance.
