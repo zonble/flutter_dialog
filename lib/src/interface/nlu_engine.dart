@@ -17,8 +17,15 @@ class NluIntent {
 
   /// Creates a new instance from a map.
   factory NluIntent.fromMap(Map json) {
-    final intent = json['intent'] ?? '';
+    var intent = json['intent'] ?? '';
+    if (intent == '') {
+      intent = json['Intent'] ?? '';
+    }
     var slots = json['slots'];
+    if (slots == null) {
+      intent = json['Slots'];
+    }
+
     if (slots == null || slots is! Map) {
       slots = const <String, dynamic>{};
     }
