@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 
 import 'common_intents.dart';
@@ -164,7 +163,7 @@ class DialogEngine implements VuiFlowDelegate {
       } else {
         await stop();
       }
-    } catch (e, s) {
+    } catch (e) {
       if (_currentVuiFlow != null) {
         // print('_currentVuiFlow $_currentVuiFlow is handling intent');
         final intent = NluIntent.empty();
