@@ -30,4 +30,5 @@ build/
 
 api_key.dart
 
-.fvm/flutter_sdk
+# FVM Version Cache
+.fvm/
